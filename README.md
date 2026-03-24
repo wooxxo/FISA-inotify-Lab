@@ -80,6 +80,7 @@ PORT=2026
 COOLDOWN=10
 LAST_RUN=0
 
+# 실행 중인 포트 있으면 종료 (포트 충돌 방지)
 kill_existing() {
     EXISTING_PID=$(lsof -ti tcp:$PORT)
     if [ -n "$EXISTING_PID" ]; then
@@ -89,6 +90,7 @@ kill_existing() {
     fi
 }
 
+# jar 파일 실행
 start_app() {
     kill_existing
     echo "$(date): 앱 실행 시작"
