@@ -7,12 +7,11 @@ Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 
 
 ---
 
-## 팀원 소개
+## 👥 팀원 소개
 | <img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/bff28997-d960-484e-bc47-7ed9c99f0e6a" /> | <img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/9a580c23-6e4b-4be7-a000-63345ba3657f" /> |
 | :---: | :---: |
 | 우승연<br>[@wooxxo](https://github.com/wooxxo) | 이채유<br>[@chaeyuuu](https://github.com/chaeyuuu) |
-<br />
----
+
 
 ## 📌 프로젝트 개요
 
@@ -176,7 +175,7 @@ inotifywait close_write 감지
 
 ## 🔧 Troubleshooting
 
-### 포트 바인딩 권한 오류 (Permission denied)
+### 1. 포트 바인딩 권한 오류 (Permission denied)
 
 **증상**
 ```
@@ -201,12 +200,59 @@ java -jar app.jar --server.port=2026
 
 ---
 
-### 포트 충돌 오류
+### 2. 포트 충돌 오류
 
-**증상** : 재배포 시 이미 포트가 사용 중이라 앱 실행 실패
+**증상**
 
-**해결** : `deploy.sh` 내 `kill_existing()` 함수로 자동 처리
+재배포 시 이미 포트가 사용 중이라 앱 실행 실패
+
+**해결** 
+
+`deploy.sh` 내 `kill_existing()` 함수로 자동 처리
 ```bash
 EXISTING_PID=$(lsof -ti tcp:$PORT)
 kill -9 $EXISTING_PID
+```
+
+---
+
+
+### 3. 유니코드 공백 오류
+
+**증상**
+```
+scp: stat local "\302\240\302\240build/libs/...": No such file or directory
+```
+
+**원인**
+
+코드 복붙 시 유니코드 공백문자(`\xc2\xa0`)가 섞여 들어옴  
+눈으로 보면 일반 공백처럼 보이지만 실제로는 다른 문자라 경로 인식 실패
+
+**해결**
+```bash
+# 유니코드 공백을 일반 공백으로 교체
+sed -i 's/\xc2\xa0/ /g' deploy.sh
+
+# 확인
+cat -A deploy.sh | grep scp
+```
+
+---
+
+### 4. sh / bash 문법 오류
+
+**증상**
+```
+deploy.sh: 37: CURRENT_TIME: not found
+```
+
+**원인**
+
+`#!/bin/bash` 파일인데 `sh`로 실행하면 `(( ))` 산술 문법 미지원
+
+**해결**
+```bash
+# sh 말고 bash로 실행
+bash deploy.sh
 ```
