@@ -1,11 +1,10 @@
 # 🚀 Spring Boot 자동 배포 자동화 프로젝트
 
-Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 자동 배포하고,
-파일 변경을 감지하여 무중단에 가깝게 재배포하는 자동화 파이프라인 구현
+> Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 자동 배포하고,
+> 파일 변경을 감지하여 무중단에 가깝게 재배포하는 자동화 파이프라인 구현
 
-![test](/Images/test.gif)
+![test](/Images/test1.gif)
 
----
 
 ## 👥 팀원 소개
 | <img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/bff28997-d960-484e-bc47-7ed9c99f0e6a" /> | <img width="150" height="150" alt="image" src="https://github.com/user-attachments/assets/9a580c23-6e4b-4be7-a000-63345ba3657f" /> |
@@ -13,7 +12,7 @@ Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 
 | 우승연<br>[@wooxxo](https://github.com/wooxxo) | 이채유<br>[@chaeyuuu](https://github.com/chaeyuuu) |
 
 
-## 📌 프로젝트 개요
+## 📌 기술 스택
 
 | 항목 | 내용 |
 |---|---|
@@ -23,7 +22,6 @@ Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 
 | 배포 방식 | SCP + inotify-tools |
 | 실행 포트 | 2026 |
 
----
 
 ## 🏗️ 아키텍처
 ```
@@ -43,7 +41,6 @@ Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 
 [ Spring Boot App 서비스 중 :2026 ]
 ```
 
----
 
 ## 📂 파일 구조
 ```
@@ -59,7 +56,6 @@ Ubuntu 서버/
 └── ~/app.log                         # 실행 로그
 ```
 
----
 
 ## ⚙️ 실행 방법
 
@@ -119,7 +115,6 @@ done
 
 </details>
 
----
 
 ### 2. Windows - 빌드 & 배포 스크립트
 
@@ -152,7 +147,6 @@ echo "=== 완료! 서버에서 자동 재배포 중 ==="
 
 </details>
 
----
 
 ## 🔄 배포 흐름
 ```
@@ -171,7 +165,6 @@ inotifywait close_write 감지
 서비스 갱신 완료 ✅
 ```
 
----
 
 ## 🔧 Troubleshooting
 
@@ -195,10 +188,8 @@ Unable to start embedded Tomcat server
 
 **해결**
 ```bash
-java -jar app.jar --server.port=2026
+application.properties 포트 설정을 80 포트 대신 2026 포트로 변경
 ```
-
----
 
 ### 2. 포트 충돌 오류
 
@@ -213,9 +204,6 @@ java -jar app.jar --server.port=2026
 EXISTING_PID=$(lsof -ti tcp:$PORT)
 kill -9 $EXISTING_PID
 ```
-
----
-
 
 ### 3. 유니코드 공백 오류
 
@@ -237,8 +225,6 @@ sed -i 's/\xc2\xa0/ /g' deploy.sh
 # 확인
 cat -A deploy.sh | grep scp
 ```
-
----
 
 ### 4. sh / bash 문법 오류
 
