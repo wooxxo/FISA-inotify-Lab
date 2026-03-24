@@ -1,4 +1,4 @@
-# 🚀 Spring Boot 자동 배포 자동화 프로젝트
+# 🚀 Spring Boot jar 자동 배포 파이프라인
 
 > Windows 개발 환경에서 빌드한 Spring Boot jar 파일을 Linux 서버에 자동 배포하고,
 > 파일 변경을 감지하여 무중단에 가깝게 재배포하는 자동화 파이프라인 구현
